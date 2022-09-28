@@ -16,20 +16,20 @@ sys_sem_open(void)
 uint64
 sys_sem_up(void)
 {
-  printf("Soy sys_sem_up");
+  printf("Soy sys_sem_up\n");
   return 0;
 }
 
 uint64
 sys_sem_close(void)
 {
-  printf("Soy sys_sem_close");
+  printf("Soy sys_sem_close\n");
   return 0;
 }
 
 uint64
 sys_sem_down(void)
 {
-  printf("Soy sys_sem_down");
+  printf("Soy sys_sem_down\n");
   return 0;
 }
