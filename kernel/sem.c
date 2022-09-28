@@ -1,21 +1,35 @@
-#include <stdio.h>
+#include "types.h"
+#include "riscv.h"
+#include "defs.h"
+#include "param.h"
+#include "memlayout.h"
+#include "spinlock.h"
+#include "proc.h"
 
-int sys_sem_open(int sem, int value){
-  printf("Soy sys_sem_open");
+uint64
+sys_sem_open(void)
+{
+  printf("Soy sys_sem_open\n");
   return 0;
 }
 
-int sys_sem_up(int sem){
+uint64
+sys_sem_up(void)
+{
   printf("Soy sys_sem_up");
   return 0;
 }
 
-int sys_sem_close(int sem){
+uint64
+sys_sem_close(void)
+{
   printf("Soy sys_sem_close");
   return 0;
 }
 
-int sys_sem_down(int sem){
+uint64
+sys_sem_down(void)
+{
   printf("Soy sys_sem_down");
   return 0;
 }
