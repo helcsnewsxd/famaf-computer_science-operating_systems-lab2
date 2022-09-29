@@ -9,5 +9,5 @@ main(int argc, char *argv[])
   sem_up(1);
   sem_close(1);
   sem_down(1);
-  exit(0);
+  exit(0);  
 }
