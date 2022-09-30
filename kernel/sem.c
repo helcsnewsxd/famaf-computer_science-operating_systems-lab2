@@ -6,17 +6,18 @@
 #include "spinlock.h"
 #include "proc.h"
 
-typedef struct sem_s{
+struct sem{
   int value;
   struct spinlock lock;
-} sem;
+};
 
-sem semaphore_counter[MAXCNTSEM];
+struct sem semaphore_counter[MAXCNTSEM];
 
 void seminit(void)
 {
   for(unsigned int i = 0; i < MAXCNTSEM; i++){
     semaphore_counter[i].value = -1;
+    initlock(&semaphore_counter[i].lock, "sem_spinlock");
   }
 }
 
@@ -27,15 +28,13 @@ sys_sem_open(void)
   argint(0, &sem_id);
   argint(1, &init_value);
 
-  //printf("%d\n", semaphore_counter[sem_id].value);
-
   if(sem_id < 0 || sem_id >= MAXCNTSEM || init_value < 0 || semaphore_counter[sem_id].value != -1){
     panic("sem_open");
     // Index errox, Init value error or Semaphore is used
   }
-
-  initlock(&semaphore_counter[sem_id].lock, "sem_spinlock");
-  semaphore_counter[sem_id].value = init_value;
+  acquire(&semaphore_counter[sem_id].lock);
+  semaphore_counter[sem_id].value = init_value;       // Critic zone
+  release(&semaphore_counter[sem_id].lock);
 
   return 0;
 }
@@ -53,8 +52,30 @@ sys_sem_up(void)
   if(semaphore_counter[sem_id].value == 0){
     wakeup(&semaphore_counter[sem_id].value);
   }
-  
-  semaphore_counter[sem_id].value++;
+
+  acquire(&semaphore_counter[sem_id].lock);  
+  semaphore_counter[sem_id].value++;      // Critic zone
+  release(&semaphore_counter[sem_id].lock);
+
+  return 0;
+}
+
+uint64
+sys_sem_down(void)
+{
+  int sem_id;
+  argint(0, &sem_id);
+
+  if(sem_id < 0 || sem_id >= MAXCNTSEM || semaphore_counter[sem_id].value == -1){
+    panic("sem_down");
+  }
+
+  acquire(&semaphore_counter[sem_id].lock);   
+  while(semaphore_counter[sem_id].value == 0){                                // Critic zone
+    sleep(&semaphore_counter[sem_id].value, &semaphore_counter[sem_id].lock); // Critic zone
+  }                                                                           // Critic zone
+  semaphore_counter[sem_id].value--;                                          // Critic zone
+  release(&semaphore_counter[sem_id].lock);   
 
   return 0;
 }
@@ -70,26 +91,10 @@ sys_sem_close(void)
   }
 
   wakeup(&semaphore_counter[sem_id].value);
-  semaphore_counter[sem_id].value = -1;
 
-  return 0;
-}
+  acquire(&semaphore_counter[sem_id].lock);  
+  semaphore_counter[sem_id].value = -1;       // Critic zone
+  release(&semaphore_counter[sem_id].lock);  
 
-uint64
-sys_sem_down(void)
-{
-  int sem_id;
-  argint(0, &sem_id);
-
-  if(sem_id < 0 || sem_id >= MAXCNTSEM || semaphore_counter[sem_id].value == -1){
-    panic("sem_down");
-  }
-
-  while(semaphore_counter[sem_id].value == 0){
-    sleep(&semaphore_counter[sem_id].value, &semaphore_counter[sem_id].lock);
-  }
-
-  semaphore_counter[sem_id].value--;
-  
   return 0;
 }
