@@ -131,6 +131,7 @@ En esta parte del código, el proceso hijo disminuye a cero el contador del sem�
 En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta en uno el contador cero (dejándolo en valor 1) y disminuye el 1 el contador uno (dejándolo en cero). Por lo tanto, una vez impreso el "pong", el proceso hijo tiene lugar a imprimir nuevamente "ping".
 
 ```c
+
    // proceso padre
    else{
     for(unsigned int i = 0; i < N; i++){
@@ -150,6 +151,7 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
     error = sem_close(1);
     exit_error(error);
   }
- ```
+  
+```
  
  Los ciclos for de ambos procesos (hijo y padre) sirven para que se realice cada print N veces, haciendo referencia a la cantidad que pasa el usuario por terminal. Se destaca que en el proceso padre se cierran los semáforos porque "pong" es lo último que se imprime, por lo tanto, el padre es el encargado de cerrarlos.
