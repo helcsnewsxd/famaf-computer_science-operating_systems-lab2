@@ -16,6 +16,8 @@ Lo que hicimos fue inicializar el semáforo deseado con sem_open, y administrar 
 
 Para ello, se hizo uso de las syscalls acquire y release a la hora de realizar modificaciones seguras a los valores del semáforo, y se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos de los procesos dormidos.
 
+En particular, en la función ping pong lo que hicimos fue usar esta implementación para imprimir por pantalla de forma organizada y alterna la palabra "ping" seguida de "pong"; se utilizó la syscall fork para controlar la ejecución de los procesos con la implementación propuesta de los semáforos.
+
 Se detallan al final del informe algunas de las implementaciones interesantes.
 
 # Explicación syscalls utilizadas
@@ -98,3 +100,56 @@ Relacionado al funcionamiento de los spinlocks y al acceso de los recursos por p
   
     // Fin de zona crítica.
 ```
+
+Relacionado a la función ping pong, lo que hicimos fue inicializar dos semáforos, uno para controlar el proceso que imprime por pantalla "ping" y otro para el proceso que imprime "pong".
+El semáforo 0 se inicializa en 1 y el semáforo 1 se inicializa en 0 para luego a través de las funciones sem_up y sem_down intercalar la ejecución de cada proceso.
+```c
+  // abrimos un semáforo para el ping
+  error = sem_open(0,1);
+  exit_error(error);
+  // abrimos un semáforo para el pong
+  error = sem_open(1,0); 
+  exit_error(error);
+```
+Usando la syscall fork, intercalamos entre el proceso hijo y padre cada print. Es importante notar que gracias a que usamos dos semáforos es que pudimos controlar la ejecución de cada proceso en cierto momento, logrando imprimir "ping pong" de forma alterna.
+En esta parte del código, el proceso hijo disminuye a cero el contador del semáforo 0 y aumenta a 1 el contador del semáforo 1, generando que el proceso hijo se bloquee dejandole lugar al proceso padre.
+```c
+ // proceso hijo
+ if(pid == 0){
+    for(unsigned int i = 0; i < N; i++){
+      error = sem_down(0);
+      exit_error(error);
+      
+      printf("ping\n");
+
+      error = sem_up(1);
+      exit_error(error);
+    }
+
+  }
+```
+En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta en uno el contador cero (dejándolo en valor 1) y disminuye el 1 el contador uno (dejándolo en cero). Por lo tanto, una vez impreso el "pong", el proceso hijo tiene lugar a imprimir nuevamente "ping".
+
+```c
+   // proceso padre
+   else{
+    for(unsigned int i = 0; i < N; i++){
+      error = sem_down(1);
+      exit_error(error);
+
+      printf("pong\n");
+
+      error = sem_up(0);
+      exit_error(error);
+    }
+
+    // Cerramos semáforo
+    error = sem_close(0); 
+    exit_error(error);
+    // Cerramos semáforo
+    error = sem_close(1);
+    exit_error(error);
+  }
+ ```
+ 
+ Los ciclos for de ambos procesos (hijo y padre) sirven para que se realice cada print N veces, haciendo referencia a la cantidad que pasa el usuario por terminal. Se destaca que en el proceso padre se cierran los semáforos porque "pong" es lo último que se imprime, por lo tanto, el padre es el encargado de cerrarlos.
