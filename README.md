@@ -21,7 +21,7 @@ En ese ciclo se realiza un swap atómico (en una sola instrucción) de *&lk->loc
 Una vez ya se libero el spinlock, se guarda en *lk->cpu* un puntero a la estructura de la CPU que esta ejecutando esta función
 
 ## release(*struct spinlock \*lk*): 
-Toma un puntero a un spinlock *lk*, revisa que no desbloqueado ya (en ese caso da un error) y desbloquea el spinlock *lk*, asignando 0 a *lk->cpu* (porque ninguna CPU está bloqueando el spinlock) y asignando 0 a *&lk->locked*
+Toma un puntero a un spinlock *lk*, revisa que no esté desbloqueado ya (en ese caso da un error) y si no lo esta, desbloquea el spinlock *lk*, asignando 0 a *lk->cpu* (porque ninguna CPU está bloqueando el spinlock) y asignando 0 a *&lk->locked*
 
 Luego habilita nuevamente las interrupciones del procesador.
 
