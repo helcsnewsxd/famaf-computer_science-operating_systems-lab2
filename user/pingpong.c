@@ -43,7 +43,7 @@ main(int argc, char *argv[])
       error = sem_down(1);
       exit_error(error);
 
-      printf("pong\n");
+      printf("    pong\n");
 
       error = sem_up(0);
       exit_error(error);
