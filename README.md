@@ -1,22 +1,37 @@
-# Introducción al proyecto
+# **Laboratorio número 2 de Sistemas Operativos 2022 - Grupo 12 | FaMAF UNC**
+
+## **Integrantes del grupo:**
+
+- Lautaro Bachmann (lautaro.bachmann@mi.unc.edu.ar)
+- Juan Bratti (juanbratti@mi.unc.edu.ar)
+- Gonzalo Canavesio (gonzalo.canavesio@mi.unc.edu.ar)
+- Emanuel Herrador (emanuel.nicolas.herrador@unc.edu.ar)
+
+
+## **Índice**
+
+
+## **Introducción al proyecto**
 Implementamos un administrador de recursos o semáforo a través del uso de un arreglo, teniendo así en cada posición un semáforo distinto. Para cada semáforo definimos una estructura con dos campos, uno para guardar el valor y otro para el spinlock, el cual está encargado de regular el acceso correcto a los recursos por parte de los procesos.
 
 Luego, en la función ping pong usamos esta implementación para imprimir por pantalla de forma organizada y alterna la palabra "ping" seguida de "pong"; se utilizó la syscall fork para controlar la ejecución de los procesos con la implementación propuesta de los semáforos.
 
-# Modularización
+## **Modularización**
 
-## Syscalls utilizadas
-### Introducción al funcionamiento de **acquire** y **release**
+### **Syscalls utilizadas**
+#### **Introducción al funcionamiento de *acquire* y *release***
 Las funciones **acquire** y **release** protegen secciones compartidas entre varios procesos, para evitar que se sobreescriban datos por error.
 La estructura del código es la siguiente
 
 **acquire()**
-Sección critica del código donde se accede a un recurso compartido
+
+- Sección critica del código donde se accede a un recurso compartido
+
 **release()**
 
 Para evitar deadlocks ("puntos muertos" donde ningún proceso puede seguir su ejecución), se deshabilitan las interrupciones al ejecutar **acquire()** y se rehabilitan al ejecutar **release()**, es decir, no se interrumpe la ejecución en la CPU del proceso mientras se está ejecutando la sección crítica del código. (Al ejecutarse varios **acquire()** anidados, para rehabilitar las interrupciones se necesita hacer la misma cantidad de **release()**, eso se gestiona mediante la variable *noff* del *struct cpu*)
 
-### acquire(*struct spinlock \*lk*)
+#### **acquire(*struct spinlock \*lk*)**
 Primero deshabilita las interrupciones del procesador.
 
 Luego toma un puntero a un spinlock *lk*, revisa que no este bloqueado ya por la misma CPU que la esta llamando (en ese caso da un error) y ejecuta un bucle del que se sale solo cuando se desbloquea el spinlock. 
@@ -25,31 +40,31 @@ En ese ciclo se realiza un swap atómico (en una sola instrucción) de *&lk->loc
 
 Una vez ya se libero el spinlock, se guarda en *lk->cpu* un puntero a la estructura de la CPU que esta ejecutando esta función
 
-### release(*struct spinlock \*lk*): 
+#### **release(*struct spinlock \*lk*)**
 Toma un puntero a un spinlock *lk*, revisa que no esté desbloqueado ya (en ese caso da un error) y si no lo esta, desbloquea el spinlock *lk*, asignando 0 a *lk->cpu* (porque ninguna CPU está bloqueando el spinlock) y asignando 0 a *&lk->locked*
 
 Luego habilita nuevamente las interrupciones del procesador.
 
-### sleep(*void \*chan, struct spinlock \*lk*)
+#### **sleep(*void \*chan, struct spinlock \*lk*)**
 Bloquea la tabla del proceso que ejecutó la función, libera el spinlock *lk*, asigna en *p->chan* el argumento  *chan* y devuelve el control del CPU hasta que el proceso es despertado por **wakeup**.
 
 Una vez es despertado, modifica el valor *p->chan* a, desbloquea la tabla del proceso y vuelve a bloquear el spinlock *lk* (Volviendo el spinlock al estado inicial antes de que fuera llamado el sleep)
 
-### wakeup(*void \*chan*): 
+#### **wakeup(*void \*chan*)**
 Revisa todos los procesos excepto el suyo, bloqueando la tabla del proceso y revisando si el proceso está dormido y esperando por *chan*, si se cumple esa condición entonces despierta al proceso (Cambia su estado de *durmiendo* a *listo para ejecutarse*)
 
 Una vez deja de revisar la tabla del proceso, la libera.
 
-### argint(*int n, int \*ip*)
+#### **argint(*int n, int \*ip*)**
 Obtiene el argumento *n*-ésimo insertado en la pila de usuario por el código de usuario antes de que el usuario solicite una llamada al sistema y lo escribe en *ip*.
 
-## Semaforo
+### **Implementación semaforo**
 
-### Manejo de secciones críticas
+#### **Manejo de secciones críticas**
 En todas aquellas secciones donde se utilizan recursos compartidos, como por ejemplo al modificar el valor del semaforo, se utilizan las funciones **acquire** y **release** para asegurarnos de que no se sobreescriban los datos y logrando así un acceso síncrono a los recursos por parte de los procesos. 
 
 
-### Estructuras del semáforo
+#### **Estructuras del semáforo**
 ```c
 // Estructura del semáforo
 struct sem{
@@ -60,7 +75,7 @@ struct sem{
 // Arreglo de semáforos
 struct sem semaphore_counter[MAXCNTSEM];
 ```
-### Funciones para el manejo de semaforos y detalles de implementación
+#### **Funciones para el manejo de semaforos y detalles de implementación**
 Para inicializar el semáforo deseado se utiliza sem_open colocando como argumentos el ID del semaforo y el valor inicial del semaforo. El ID del semáforo va a ser el indice del arreglo de semaforos al cual accederemos, y en caso de ya estar siendo utilizado se le informa al usuario mediante un error. Se inicializa el *lock* del semaforo y se lo utiliza para bloquearlo mientras se le asigna al semaforo su valor inicial.
 
 Para administrar el uso de recursos entre procesos se usan las funciones **sem_up** y **sem_down**. Dentro de estas funciones se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos y administrar los procesos dormidos, cumpliendo con la consigna de bloquer los procesos cuando el valor del semaforo es 0 al utilizar **sem_down** y desbloquearlos cuando el valor del semaforo es 0 al utilizar **sem_up**
@@ -70,7 +85,7 @@ Para definir cuando un semaforo esta "bloqueado", asignamos al valor del semafor
 Se detallan a continuación algunas de las implementaciones interesantes.
 
 
-## Implementaciones Interesantes
+### **Implementaciones Interesantes**
 Relacionado al funcionamiento de los spinlocks y al acceso de los recursos por parte de los procesos, alguna de las implementaciones destacables son las soluciones a los siguientes problemas:
 
 1. El valor del semáforo disminuye utilizando la función sem_down, y un proceso quiere acceder a un recurso.
@@ -167,21 +182,25 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
  
  Los ciclos for de ambos procesos (hijo y padre) sirven para que se realice cada print N veces, haciendo referencia a la cantidad que pasa el usuario por terminal. Se destaca que en el proceso padre se cierran los semáforos porque "pong" es lo último que se imprime, por lo tanto, el padre es el encargado de cerrarlos.
 
-## Implementaciones en XV6
+### **Implementaciones en XV6**
 
 
-# Técnicas de Programación
+## **Técnicas de Programación**
 
 
-# Herramientas de Programación
+## **Herramientas de Programación**
 
 
-# Desarrollo
+## **Desarrollo**
 
 
-# Conclusiones
+## **Conclusiones**
 Al implementar semaforos en XV6, aprendimos sobre condiciones de carrera, locks, mutex y sobre operaciones atómicas y como administrar la memoria en sistemas operativos para evitar sobreescrituras, todo con el objetivo de permitir a los hilos intercambiar información de forma segura. 
 
 Probablemente todo este aprendizaje cobre mucho más sentido cuando lleguemos a la sección de concurrencia en el teórico, pero creemos que este proyecto nos sirvió de alguna forma como introducción a ese tema y nos va a ser más fácil cuando tengamos que verlo desde la teoria.
 
 También aprendimos sobre XV6, como separa sus espacios de kernel y de usuario y como hace la comunicación entre ellos. 
+
+## **Webgrafía**
+- https://github.com/mit-pdos/xv6-book
+- https://github.com/YehudaShapira/xv6-explained
