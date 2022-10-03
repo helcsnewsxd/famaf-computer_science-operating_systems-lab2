@@ -25,11 +25,10 @@ static struct {
 
 static char digits[] = "0123456789abcdef";
 
-static void
-printint(int xx, int base, int sign)
+static int
+itoa(char* buf, int xx, int base, int sign)
 {
-  char buf[16];
-  int i;
+  int len, temp;
   uint x;
 
   if(sign && (sign = xx < 0))
@@ -37,16 +36,33 @@ printint(int xx, int base, int sign)
   else
     x = xx;
 
-  i = 0;
+  len = 0;
   do {
-    buf[i++] = digits[x % base];
+    buf[len++] = digits[x % base];
   } while((x /= base) != 0);
 
   if(sign)
-    buf[i++] = '-';
+    buf[len++] = '-';
 
-  while(--i >= 0)
+  for (int i = 0; i < len/2; i++)  
+  {  
+    temp = buf[i];  
+    buf[i] = buf[len - i - 1];  
+    buf[len - i - 1] = temp;  
+  }
+
+  return len;
+
+}
+
+static void
+printint(int xx, int base, int sign)
+{
+  char buf[16];
+  int len = itoa(buf, xx, base, sign);
+  for (int i = 0; i < len; ++i) {
     consputc(buf[i]);
+  }
 }
 
 static void
