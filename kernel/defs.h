@@ -80,6 +80,7 @@ int             pipewrite(struct pipe*, uint64, int);
 void            printf(char*, ...);
 void            panic(char*) __attribute__((noreturn));
 void            printfinit(void);
+int 		uint_to_str(char* str, int xx);
 
 // proc.c
 int             cpuid(void);
@@ -135,6 +136,7 @@ char*           safestrcpy(char*, const char*, int);
 int             strlen(const char*);
 int             strncmp(const char*, const char*, uint);
 char*           strncpy(char*, const char*, int);
+char* 		strcat(char *dest, const char *src);
 
 // syscall.c
 void            argint(int, int*);

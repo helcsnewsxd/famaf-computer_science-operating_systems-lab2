@@ -26,6 +26,9 @@ void seminit(void)
 uint64
 sys_sem_open(void)
 {
+  char num[4];
+  char lock_name[17] = "sem_spinlock ";
+
   int sem_id, init_value;
   argint(0, &sem_id); // argint toma el id pasado por usuario y lo guarda en sem_id
   argint(1, &init_value); // argint toma el valor pasado por usuario y lo guarda en init_value
@@ -35,7 +38,10 @@ sys_sem_open(void)
     // Error en init, devuelve cero en caso de cumplirse alguna de las guardas.
   }
 
-  initlock(&semaphore_counter[sem_id].lock, "sem_spinlock");  // Inicializa lock con nombre "sem_spinlock".
+  uint_to_str(num, sem_id);
+  strcat(lock_name, num);
+
+  initlock(&semaphore_counter[sem_id].lock, lock_name);  // Inicializa lock con nombre "sem_spinlock".
 
   // Zona crítica para evitar que datos se sobreescriban
   acquire(&semaphore_counter[sem_id].lock); // Se lockea

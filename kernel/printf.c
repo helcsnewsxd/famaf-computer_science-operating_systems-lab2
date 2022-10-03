@@ -65,6 +65,13 @@ printint(int xx, int base, int sign)
   }
 }
 
+int
+uint_to_str(char* str, int xx)
+{
+  int len = itoa(str, xx, 10, 0);
+  return len;
+}
+
 static void
 printptr(uint64 x)
 {
