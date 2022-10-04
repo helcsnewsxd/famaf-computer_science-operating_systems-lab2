@@ -13,9 +13,8 @@
 [TOC]
 
 # Introducción
-Implementamos semáforo a través del uso de un arreglo, teniendo así en cada posición un semáforo distinto. Para cada semáforo definimos una estructura con dos campos, uno para guardar el valor y otro para el spinlock, el cual está encargado de regular el acceso correcto a los recursos por parte de los procesos.
-
-Luego, en la función ping pong usamos esta implementación para imprimir por pantalla de forma organizada y alterna la palabra "ping" seguida de "pong"; se utilizó la syscall fork para controlar la ejecución de los procesos con la implementación propuesta de los semáforos.
+Luego de ver en la primera parte del semestre la virtualización de los procesos y de la memoria, comenzamos a pensar acerca de los multiprogramas y los hilos. Comenzamos a ver más allá de un programa que ejecute un solo proceso, pasando a varios hilos en forma simultánea (lo cual permite gran eficiencia). Sin embargo, toda optimización tiene un costo y, en este caso, son los _problemas de concurrencia_.
+Por ello mismo y como consecuencia de lo mencionado, en este laboratorio vamos a trabajar una de las formas de solucionar este conflicto: _la implementación de semáforos con spinlocks_.
 
 # ¿Cómo correr el código?
 ## Instalación
@@ -146,7 +145,7 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 - **mutex:** (exclusión mutua) Es el requisito de que un hilo de ejecución nunca entre en una sección crítica mientras un hilo de ejecución concurrente ya está accediendo a dicha sección crítica. Se crea para prevenir condiciones de carrera. 
 - **deadlocks:** Es el bloqueo permanente de un conjunto de procesos o hilos de ejecución en un sistema concurrente que compiten por recursos compartidos. Todos los interbloqueos surgen de necesidades que no pueden ser satisfechas por parte de dos o más procesos.
 - **zona crítica:** Porción de código en la que se accede a un recurso compartido que no debe ser accedido por más de un proceso o hilo en ejecución. Se necesita un mecanismo de sincronización en la entrada y salida de la sección crítica para asegurar la utilización en exclusiva del recurso.
-- **Semaforo:** Es una varaible (o TAD) que se utiliza para administrar el acceso a un recurso compartido en un entorno de multiprocesamiento y evitar problemas en las secciones críticas del sistema.
+- **Semaforo:** Es una variable (o TAD) que se utiliza para administrar el acceso a un recurso compartido en un entorno de multiprocesamiento y evitar problemas en las secciones críticas del sistema.
 
 ## *Desarrollo*
 
@@ -169,7 +168,7 @@ No pudimos implementar una función denominada prodsumadiv, con la cual podiamos
 
 Lo que hacia la función es arg4 veces la operación "x = (x * arg1 + arg2)/arg3", usando 3 procesos, uno por argumento.
 
-El problema fue que al crear los procesos con fork no vimos forma de compartir memoria entre padres e hijos (sin que se genere una copia). Esto se debe más que nada que mmap y demás funciones no están implementadas en xv6. Para eso necesitabamos crear las syscalls y el ambiente en xv6 para los threads, y consideramos que se va muy de tema con lo pedido por el lab.
+El problema fue que al crear los procesos con fork no vimos forma de compartir memoria entre padres e hijos (sin que se genere una copia). Esto se debe más que nada que mmap y demás funciones no están implementadas en xv6. Para eso necesitabamos crear las syscalls y el ambiente en xv6 para los threads, y consideramos que no es el objetivo del presente laboratorio.
 
 ## *Comunicación*
 La comunicación se basó fuertemente en plataformas como [Discord](https://discord.com/), donde la comunicación es más organizada y se pueden hacer llamadas de voz, y [Telegram](https://telegram.org/), donde conseguimos una comunicación más veloz e informal. 
@@ -181,11 +180,9 @@ Nuestro workflow se apoyó fuertemente en el uso de branchs dentro del repositor
 En cada parte del trabajo, se crearon branchs para: adición de los prototipos a los archivos complementarios de XV6, realización del informe, implementación de las syscalls y testeo de las mismas.
 
 ## *Pruebas utilizadas*
-Además de los tests brindados por la cátedra, se realizaron pruebas caseras. Uno de los tests realizados fue pingpongpung (mismo comportamiento que pingpong pero con 3 hilos).
+Además de los tests pedidos por la cátedra (pingpong.c), se realizaron pruebas caseras. Uno de los tests realizados fue pingpongpung (mismo comportamiento que pingpong pero con 3 hilos).
 
 # Conclusiones
 Al implementar semaforos en XV6, aprendimos sobre condiciones de carrera, locks, mutex y sobre operaciones atómicas y como administrar la memoria en sistemas operativos para evitar sobreescrituras, todo con el objetivo de permitir a los hilos intercambiar información de forma segura. 
 
-Probablemente todo este aprendizaje cobre mucho más sentido cuando lleguemos a la sección de concurrencia en el teórico, pero creemos que este proyecto nos sirvió de alguna forma como introducción a ese tema y nos va a ser más fácil cuando tengamos que verlo desde la teoría.
-
-También aprendimos sobre XV6, como separa sus espacios de kernel y de usuario y como hace la comunicación entre ellos. 
+Todo este aprendizaje, junto con el conocimiento de la estructura del SO XV6, nos ha ayudado para poder entender y comprender de mejor modo los conceptos que en posteriores clases comenzaremos a ver desde la parte teórica de la materia. Nos ha sido provechoso para poder tener más conocimiento de cómo funciona un sistema operativo, cómo se estructura, cuáles son sus partes fundamentales y cuáles son algunos de los problemas que hay a la hora de implementarlo.
