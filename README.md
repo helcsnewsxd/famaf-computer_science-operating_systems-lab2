@@ -10,8 +10,18 @@
 
 ## **Índice**
 
+ - [Introducción](#markdown-header-introduccion)
+ - [Modularización](#markdown-header-detalles-de-implementacion)
+    - [Syscalls utilizadas](#markdown-header-caracteristicas-implementadas)
+    - [Implementación semaforo](#markdown-header-implementacion-semaforo)
+    - [Implementaciones en XV6](#markdown-header-implementaciones-en-xv6)
+ - [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
+ - [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
+ - [Conclusiones](#markdown-header-conclusiones)
+ - [Webgrafía](#markdown-header-webgrafia)
 
-## **Introducción al proyecto**
+
+## **Introducción**
 Implementamos un administrador de recursos o semáforo a través del uso de un arreglo, teniendo así en cada posición un semáforo distinto. Para cada semáforo definimos una estructura con dos campos, uno para guardar el valor y otro para el spinlock, el cual está encargado de regular el acceso correcto a los recursos por parte de los procesos.
 
 Luego, en la función ping pong usamos esta implementación para imprimir por pantalla de forma organizada y alterna la palabra "ping" seguida de "pong"; se utilizó la syscall fork para controlar la ejecución de los procesos con la implementación propuesta de los semáforos.
@@ -58,7 +68,7 @@ Una vez deja de revisar la tabla del proceso, la libera.
 #### **argint(*int n, int \*ip*)**
 Obtiene el argumento *n*-ésimo insertado en la pila de usuario por el código de usuario antes de que el usuario solicite una llamada al sistema y lo escribe en *ip*.
 
-### **Implementación semaforo**
+## **Implementación semaforo**
 
 #### **Manejo de secciones críticas**
 En todas aquellas secciones donde se utilizan recursos compartidos, como por ejemplo al modificar el valor del semaforo, se utilizan las funciones **acquire** y **release** para asegurarnos de que no se sobreescriban los datos y logrando así un acceso síncrono a los recursos por parte de los procesos. 
@@ -74,7 +84,7 @@ struct sem{
 // Arreglo de semáforos
 struct sem semaphore_counter[MAXCNTSEM];
 ```
-#### **Funciones para el manejo de semaforos y detalles de implementación**
+#### **Funciones para el manejo de semáforos y detalles de implementación**
 Para inicializar el semáforo deseado se utiliza sem_open colocando como argumentos el ID del semaforo y el valor inicial del semaforo. El ID del semáforo va a ser el indice del arreglo de semaforos al cual accederemos, y en caso de ya estar siendo utilizado se le informa al usuario mediante un error. Se inicializa el *lock* del semaforo y se lo utiliza para bloquearlo mientras se le asigna al semaforo su valor inicial.
 
 Para administrar el uso de recursos entre procesos se usan las funciones **sem_up** y **sem_down**. Dentro de estas funciones se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos y administrar los procesos dormidos, cumpliendo con la consigna de bloquer los procesos cuando el valor del semaforo es 0 al utilizar **sem_down** y desbloquearlos cuando el valor del semaforo es 0 al utilizar **sem_up**
@@ -181,11 +191,14 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
  
  Los ciclos for de ambos procesos (hijo y padre) sirven para que se realice cada print N veces, haciendo referencia a la cantidad que pasa el usuario por terminal. Se destaca que en el proceso padre se cierran los semáforos porque "pong" es lo último que se imprime, por lo tanto, el padre es el encargado de cerrarlos.
 
-### **Implementaciones en XV6**
-
-
-## **Técnicas de Programación**
-
+## **Implementaciones en XV6**
+Para poder implementar las llamadas al sistema necesarias para el laboratorio, tuvimos que investigar sobre la adición de las mismas en los archivos complementarios de XV6. Para ello, fue necesario cambiar algunos archivos y agregar en los mismos las definiciones y prototipos de las funciones a implementar, especialmente, las llamadas al sistema.
+Fue necesario modificar los siguientes archivos:
+- 
+- Adición de las syscalls en los archivos complementarios de xv6.
+- Implementación de las syscalls pedidas.
+- Implementación del programa ping pong.
+- Testeo correspondiente de las llamadas al sistema.
 
 ## **Herramientas de Programación**
 Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
@@ -195,6 +208,7 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
  - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
  - [**Documentación de XV6**](https://course.ccs.neu.edu/cs3650/unix-xv6/index.html)
  - [**Explicaciones sobre el funcionamiento de XV6**](https://github.com/YehudaShapira/xv6-explained)
+ - [**Repositorio XV6**](https://github.com/mit-pdos/xv6-book) 
 ### **Desarrollo**
 
  - [Visual Studio Code](https://code.visualstudio.com/), editor de código
@@ -208,7 +222,7 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 
 - [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 
-## **Desarrollo**
+## **Desarrollo del proyecto**
 ### *Comunicación*
 La comunicación se basó fuertemente en plataformas como [Discord](https://discord.com/) y [Telegram](https://telegram.org/).
 
