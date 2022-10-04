@@ -116,7 +116,7 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 - **kernel/printf.c:** implementar funcion para convertir un entero no signado en un string
 - **kernel/string.c:** implementar funcion para concatenar strings
 - **kernel/param.h:** se declararon las variables globales y el arreglo de semáforos para el posterior uso en la implementación.
-- **kernel/defs.h: Añadir prototipos para las siguientes funciones:**
+- **kernel/defs.h:** Añadir prototipos para las siguientes funciones:
     - `uint_to_str`
     - `seminit`
     - `strcat`
@@ -130,7 +130,17 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 ### Otros
 - **Makefile:** se enlazó el ejecutable de pingpong.c y sem.c para la correcta ejecución del programa.
 
-# Conceptos teóricos utilizados
+# Herramientas de Programación
+Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
+
+## *Material teórico de estudio y preparación*
+
+ - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) y los capitulos de la sección de Concurrencia, sobre todo el capítulo número 31 (*Semaphores*), junto con las secciones de *Homework Simulation* y *Homework Code* de cada uno de esos capitulos.
+ - [**Documentación de XV6**](https://course.ccs.neu.edu/cs3650/unix-xv6/index.html)
+ - [**Explicaciones sobre el funcionamiento de XV6**](https://github.com/YehudaShapira/xv6-explained)
+ - [**Repositorio XV6**](https://github.com/mit-pdos/xv6-book) 
+
+### Conceptos teóricos utilizados
 - **Race conditions:** Esto se da cuando un resultado depende de procesos que se ejecutan en un orden arbitrario y trabajan sobre el mismo recurso compartido, los procesos corren una "carrera" para acceder al recurso compartido y se puede producir un error cuando dichos procesos no llegan (se ejecutan) en el orden que se esperaba.
 - **locks:** Son un mecanismo de sincronización que limita el acceso a un recurso compartido por varios procesos o hilos en un ambiente de ejecución concurrente, permitiendo así la exclusión mutua. Cada proceso/hilo para tener acceso a un elemento del conjunto, deberá bloquear, con lo que se convierte en su dueño, esa es la única forma de ganar acceso. Al terminar de usarlo, el dueño debe desbloquear, para permitir que otro proceso/hilo pueda tomarlo a su vez.
 - **mutex:** (exclusión mutua) Es el requisito de que un hilo de ejecución nunca entre en una sección crítica mientras un hilo de ejecución concurrente ya está accediendo a dicha sección crítica. Se crea para prevenir condiciones de carrera. 
@@ -138,15 +148,6 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 - **zona crítica:** Porción de código en la que se accede a un recurso compartido que no debe ser accedido por más de un proceso o hilo en ejecución. Se necesita un mecanismo de sincronización en la entrada y salida de la sección crítica para asegurar la utilización en exclusiva del recurso.
 - **Semaforo:** Es una varaible (o TAD) que se utiliza para administrar el acceso a un recurso compartido en un entorno de multiprocesamiento y evitar problemas en las secciones críticas del sistema.
 
-# Herramientas de Programación
-Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
-
-## *Material teórico de estudio y preparación*
-
- - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
- - [**Documentación de XV6**](https://course.ccs.neu.edu/cs3650/unix-xv6/index.html)
- - [**Explicaciones sobre el funcionamiento de XV6**](https://github.com/YehudaShapira/xv6-explained)
- - [**Repositorio XV6**](https://github.com/mit-pdos/xv6-book) 
 ## *Desarrollo*
 
  - [Visual Studio Code](https://code.visualstudio.com/), editor de código
