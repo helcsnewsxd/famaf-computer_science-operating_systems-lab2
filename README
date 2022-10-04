@@ -30,8 +30,9 @@ Luego, en la función ping pong usamos esta implementación para imprimir por pa
 
 ## **¿Cómo correr el código?**
 ### **Preparación**
-1. Clonar repositorio.
-2. Instalar `qemu`.
+1. Clonar repositorio: `git clone https://bitbucket.org/sistop-famaf/so22lab2g12.git`
+2. Instalar qemu (ubuntu): `sudo apt-get install qemu-system-riscv64`
+    - Para otras distribuciones ver este [link](https://pdos.csail.mit.edu/6.828/2019/tools.html).
 
 ### **Compilación y ejecución**
 Para compilar el código y ejecutar xv6 debemos escribir en la terminal:
