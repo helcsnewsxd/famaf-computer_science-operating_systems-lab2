@@ -11,6 +11,7 @@
 ## **Índice**
 
  - [Introducción](#markdown-header-introduccion)
+ - [¿Cómo correr el código?](#markdown-header-como-correr-el-codigo)
  - [Modularización](#markdown-header-modularizacion)
     - [Syscalls utilizadas](#markdown-header-syscalls-utilizadas)
     - [Implementación semaforo](#markdown-header-implementacion-semaforo)
@@ -26,6 +27,26 @@
 Implementamos un administrador de recursos o semáforo a través del uso de un arreglo, teniendo así en cada posición un semáforo distinto. Para cada semáforo definimos una estructura con dos campos, uno para guardar el valor y otro para el spinlock, el cual está encargado de regular el acceso correcto a los recursos por parte de los procesos.
 
 Luego, en la función ping pong usamos esta implementación para imprimir por pantalla de forma organizada y alterna la palabra "ping" seguida de "pong"; se utilizó la syscall fork para controlar la ejecución de los procesos con la implementación propuesta de los semáforos.
+
+## **¿Cómo correr el código?**
+### **Preparación**
+1. Clonar repositorio.
+2. Instalar `qemu`.
+
+### **Compilación y ejecución**
+Para compilar el código y ejecutar xv6 debemos escribir en la terminal:
+```sh
+make qemu
+```
+en el directorio principal (*so22lab1g12*). Para hacer uso de la función pingpong debemos escribir
+```sh
+pingpong N
+```
+donde N es un número natural.
+Finalmente, para eliminar todos los archivos ejecutables, debe tenerse en cuenta el comando
+```
+make clean
+```
 
 ## **Modularización**
 
