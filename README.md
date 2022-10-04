@@ -92,20 +92,20 @@ Para inicializar el semáforo deseado se utiliza sem_open colocando como argumen
 ### sem\_up y sem\_down
 Para administrar el uso de recursos entre procesos se usan las funciones **sem_up** y **sem_down**. Dentro de estas funciones se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos y administrar los procesos dormidos, cumpliendo con la consigna de bloquear los procesos cuando el valor del semaforo es 0 al utilizar **sem_down** y desbloquearlos cuando el valor del semaforo es 0 al utilizar **sem_up**
 
-### Semaforos bloqueados
-Para definir cuando un semaforo esta "bloqueado", asignamos al valor del semaforo el entero -1.
+### Semaforos libres para su uso
+Para definir cuando un semaforo esta "libre", asignamos al valor de este al entero -1.
 
 ### Inicializacion del array de semaforos
 En el arranque del sistema operativo ejecutamos la función **seminit** que se encarga de inicializar el valor de todos los semaforos en -1. 
 
 ### sem_close
-La función **sem_close** despierta todos los procesos que hayan sido mandados a dormir por el semaforo y establece el valor del semaforo en -1.
+La función **sem_close** despierta todos los procesos que hayan sido mandados a dormir por el semáforo y establece su valor en -1.
 
 ## Implementacion pingpong
 Lo que hicimos fue inicializar dos semáforos, uno para controlar el proceso que imprime por pantalla "ping" y otro para el proceso que imprime "pong".
-El semáforo del "ping" se inicializa en 1 y el semáforo del "pong" se inicializa en 0 para luego a través de las funciones sem_up y sem_down intercalar la ejecución de cada proceso.
+El semáforo del "ping" se inicializa en 1 y el semáforo del "pong" se inicializa en 0 para luego a través de las funciones sem_up y sem_down se intercale la ejecución de cada proceso.
 
-Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hijo y padre cada print.
+En definitiva, usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hijo y padre cada print.
 
 ## Implementaciones en XV6
 ### Kernel
@@ -140,17 +140,17 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 
 ### Conceptos teóricos utilizados
 - **Race conditions:** Esto se da cuando un resultado depende de procesos que se ejecutan en un orden arbitrario y trabajan sobre el mismo recurso compartido, los procesos corren una "carrera" para acceder al recurso compartido y se puede producir un error cuando dichos procesos no llegan (se ejecutan) en el orden que se esperaba.
-- **locks:** Son un mecanismo de sincronización que limita el acceso a un recurso compartido por varios procesos o hilos en un ambiente de ejecución concurrente, permitiendo así la exclusión mutua. Cada proceso/hilo para tener acceso a un elemento del conjunto, deberá bloquear, con lo que se convierte en su dueño, esa es la única forma de ganar acceso. Al terminar de usarlo, el dueño debe desbloquear, para permitir que otro proceso/hilo pueda tomarlo a su vez.
-- **mutex:** (exclusión mutua) Es el requisito de que un hilo de ejecución nunca entre en una sección crítica mientras un hilo de ejecución concurrente ya está accediendo a dicha sección crítica. Se crea para prevenir condiciones de carrera. 
-- **deadlocks:** Es cualquier situación en la cual ningún proceso puede proceder con su ejecución porque cada uno de los procesos del grupo está esperando que otro proceso tome acción.
-- **zona crítica:** Porción de código en la que se accede a un recurso compartido que no debe ser accedido por más de un proceso o hilo en ejecución. Se necesita un mecanismo de sincronización en la entrada y salida de la sección crítica para asegurar la utilización en exclusiva del recurso.
-- **Semaforo:** Es una variable (o TAD) que se utiliza para administrar el acceso a un recurso compartido en un entorno de multiprocesamiento y evitar problemas en las secciones críticas del sistema.
+- **Locks:** Son un mecanismo de sincronización que limita el acceso a un recurso compartido por varios procesos o hilos en un ambiente de ejecución concurrente, permitiendo así la exclusión mutua. Cada proceso/hilo para tener acceso a un elemento del conjunto, deberá bloquear, con lo que se convierte en su dueño, esa es la única forma de ganar acceso. Al terminar de usarlo, el dueño debe desbloquear, para permitir que otro proceso/hilo pueda tomarlo a su vez.
+- **Mutex:** (exclusión mutua) Es el requisito de que un hilo de ejecución nunca entre en una sección crítica mientras un hilo de ejecución concurrente ya está accediendo a dicha sección crítica. Se crea para prevenir condiciones de carrera. 
+- **Deadlocks:** Es cualquier situación en la cual ningún proceso puede proceder con su ejecución porque cada uno de los procesos del grupo está esperando que otro tome la acción.
+- **Zona crítica:** Porción de código en la que se accede a un recurso compartido que no debe ser accedido por más de un proceso o hilo en ejecución. Se necesita un mecanismo de sincronización en la entrada y salida de la sección crítica para asegurar la utilización en exclusiva del recurso.
+- **Semáforo:** Es una variable (o TAD) que se utiliza para administrar el acceso a un recurso compartido en un entorno de multiprocesamiento y evitar problemas en las secciones críticas del sistema.
 
 ## *Desarrollo*
 
  - [Visual Studio Code](https://code.visualstudio.com/), editor de código
 
-## *Compilacion*
+## *Compilación*
 
 - [GNU Make](https://www.gnu.org/software/make/)
 
@@ -159,10 +159,10 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 - [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 
 # Desarrollo del proyecto
-Comenzamos haciendo una investigación sobre el funcionamiento de XV6 y conceptos como race conditions, el funcionamiento de los locks y de los semáforos. Primero implementamos los prototipos de las funciones en XV6 y luego desarrollamos gran parte de la implementación del semáforo todos juntos durante el laboratorio. Luego corregimos detalles y agregando nuevas funcionalidades. El proyecto en general, al ser tan corto, no tuvo mucha separación u organización interna en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a la longitud del laboratorio.
+Comenzamos haciendo una investigación sobre el funcionamiento de XV6 y conceptos como race conditions, el funcionamiento de los locks y de los semáforos. Primero realizamos los prototipos de las funciones en XV6 y luego desarrollamos gran parte de la implementación del semáforo todos juntos durante el laboratorio. Posteriormente, corregimos detalles y agregando nuevas funcionalidades. El proyecto en general, al ser tan corto, no tuvo mucha separación u organización interna en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a su longitud.
 
 ## Problemas
-No pudimos implementar una función denominada prodsumadiv, la cual recibia 4 argumentos y con la cual podiamos comprobar facilmente que los semaforos funcionen correctamente y no haya race conditions. 
+Con el objetivo de corroborar el correcto funcionamiento de los semáforos respecto a las race conditions, se tuvo la idea de implementar una función denominada prodsumadiv, la cual recibia 4 argumentos.
 
 Siendo *arg_i* el argumento *i* de la función, lo que hacía era *arg_4* veces la operación `x = (x * arg_1 + arg_2)/arg_3`, usando 3 procesos, uno por argumento.
 
