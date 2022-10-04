@@ -36,7 +36,6 @@ pingpong N
 donde N es un número natural.
 
 # Implementación del proyecto
-Para realizar el trabajo, no nos basamos en una fuerte modularización individual o en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a la longitud del laboratorio. Esta división de partes fue principalmente en el trabajo sobre las syscalls, implementación del semáforo y las implementaciones en XV6 necesarias.
 
 ## Syscalls utilizadas
 ### Introducción al funcionamiento de *acquire* y *release*
@@ -161,7 +160,7 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 - [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 
 # Desarrollo del proyecto
-Comenzamos haciendo una investigación sobre el funcionamiento de XV6 y conceptos como race conditions, el funcionamiento de los locks y de los semáforos. Primero implementamos los prototipos de las funciones en XV6 y luego desarrollamos gran parte de la implementación del semáforo todos juntos durante el laboratorio. Luego corregimos detalles y agregando nuevas funcionalidades. El proyecto en general, al ser tan corto, no tuvo mucha separación y organización interna en el grupo.
+Comenzamos haciendo una investigación sobre el funcionamiento de XV6 y conceptos como race conditions, el funcionamiento de los locks y de los semáforos. Primero implementamos los prototipos de las funciones en XV6 y luego desarrollamos gran parte de la implementación del semáforo todos juntos durante el laboratorio. Luego corregimos detalles y agregando nuevas funcionalidades. El proyecto en general, al ser tan corto, no tuvo mucha separación u organización interna en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a la longitud del laboratorio.
 
 ## Problemas
 No pudimos implementar una función denominada prodsumadiv, con la cual podiamos comprobar facilmente que los semaforos funcionen correctamente y no haya race conditions. 
