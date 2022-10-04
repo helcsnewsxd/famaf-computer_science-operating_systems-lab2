@@ -149,8 +149,7 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 ## *Desarrollo*
 
  - [Visual Studio Code](https://code.visualstudio.com/), editor de código
- - [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), formateador de código
-    - Se generó una configuración basada en la guía de estilo de GNU y se subió al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de forma similar.
+
 ## *Compilacion*
 
 - [GNU Make](https://www.gnu.org/software/make/)
