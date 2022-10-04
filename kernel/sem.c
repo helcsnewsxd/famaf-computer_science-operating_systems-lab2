@@ -6,16 +6,16 @@
 #include "spinlock.h"
 #include "proc.h"
 
-// Estructura usada para cada semáforo. Value es el "contador", lock es el spinlock que administra los procesos dormidos
+// Used structure for the semaphores. Value is the "counter", lock is the spinlock that controls asleep processes
 struct sem{
   int value;
   struct spinlock lock;
 };
 
-// Declaración de tamaño máximo del arreglo de semáforos
+// max number of semaphores (indexes)
 struct sem semaphore_counter[MAXCNTSEM];
 
-// Syscal auxiliar para inicializar los semáforos en el arreglo.
+// syscall used for the initialization of the semaphores
 void seminit(void)
 {
   for(unsigned int i = 0; i < MAXCNTSEM; i++){
@@ -30,51 +30,51 @@ sys_sem_open(void)
   char lock_name[17] = "sem_spinlock ";
 
   int sem_id, init_value;
-  argint(0, &sem_id); // argint toma el id pasado por usuario y lo guarda en sem_id
-  argint(1, &init_value); // argint toma el valor pasado por usuario y lo guarda en init_value
+  argint(0, &sem_id); // argint processes the id the user passed as input
+  argint(1, &init_value); // argint processes the value the user passed as input
 
   if(sem_id < 0 || sem_id >= MAXCNTSEM || init_value < 0 || semaphore_counter[sem_id].value != -1){
     return 0;
-    // Error en init, devuelve cero en caso de cumplirse alguna de las guardas.
+    // if there's an error, return 0
   }
 
   uint_to_str(num, sem_id);
   strcat(lock_name, num);
 
-  initlock(&semaphore_counter[sem_id].lock, lock_name);  // Inicializa lock con nombre "sem_spinlock".
+  initlock(&semaphore_counter[sem_id].lock, lock_name);  // initialization of the lock.
 
-  // Zona crítica para evitar que datos se sobreescriban
-  acquire(&semaphore_counter[sem_id].lock); // Se lockea
+  // Critical zone
+  acquire(&semaphore_counter[sem_id].lock); // locked
 
-  semaphore_counter[sem_id].value = init_value;  // Se guarda el valor deseado
+  semaphore_counter[sem_id].value = init_value;  // value is saved into the semaphore's counter
   
-  release(&semaphore_counter[sem_id].lock); // Se libera
-  // Fin de zona crítica
+  release(&semaphore_counter[sem_id].lock); // unlocked
+  // End of critical zone
 
-  return 1; // Devuelve 1 en caso de no haber errores
+  return 1; // returns 1 if successful
 }
 
 uint64
 sys_sem_up(void)
 {
   int sem_id; 
-  argint(0, &sem_id); // Se toma el id del semáforo ingresado por usuario y se guarda en sem_id.
+  argint(0, &sem_id); // argint processes the id the user passed as input
 
   if(sem_id < 0 || sem_id >= MAXCNTSEM || semaphore_counter[sem_id].value == -1){
-    return 0; // Hay errores? Si los hay, devuelve cero.
+    return 0; // return 0 if there are any errors
   }
 
-  // Zona crítica para evitar que datos se sobreescriban
-  acquire(&semaphore_counter[sem_id].lock); // Se lockea
+  // Critical zone
+  acquire(&semaphore_counter[sem_id].lock); // locked
 
   if(semaphore_counter[sem_id].value == 0){
-    wakeup(&semaphore_counter[sem_id]); // Al sumar en uno el contador, los procesos dormidos tienen prioridad para usar el recurso. Se utiliza wakeup para despertarlos.
+    wakeup(&semaphore_counter[sem_id]); // Asleep processes can now access the resources, they have priority if they were asleep and the counter is now > 0
   }
 
-  semaphore_counter[sem_id].value++; // Aumenta el valor del semáforo
+  semaphore_counter[sem_id].value++; // counter = counter + 1
 
-  release(&semaphore_counter[sem_id].lock); // Se libera
-  // Fin de zona crítica.
+  release(&semaphore_counter[sem_id].lock); // unlocked
+  // End of critical zone
 
   return 1;
 }
@@ -83,22 +83,22 @@ uint64
 sys_sem_down(void)
 {
   int sem_id;
-  argint(0, &sem_id); // Se toma el id del semáforo ingresado por usuario y se guarda en sem_id.
+  argint(0, &sem_id); // argint processes the id the user passed as input
 
   if(sem_id < 0 || sem_id >= MAXCNTSEM || semaphore_counter[sem_id].value == -1){
-    return 0; // En caso de haber errores, devuelve cero.
+    return 0; // return 0 if there are any errors
   }
 
-  // Zona crítica para evitar que datos se sobreescriban
-  acquire(&semaphore_counter[sem_id].lock); // Se lockea
+  // Critical zone
+  acquire(&semaphore_counter[sem_id].lock); // locked
 
   while(semaphore_counter[sem_id].value == 0){                               
-    sleep(&semaphore_counter[sem_id], &semaphore_counter[sem_id].lock);       // Duerme aquellos procesos que necesiten el recurso en el caso de que el contador esté en cero
+    sleep(&semaphore_counter[sem_id], &semaphore_counter[sem_id].lock);       // If the counter = 0, the process that want to access to a certain resource will now be put to sleep.
   }                                                                          
-  semaphore_counter[sem_id].value--;  // Disminuye el valor del semáforo                                        
+  semaphore_counter[sem_id].value--;  // counter = counter - 1                                      
                                         
-  release(&semaphore_counter[sem_id].lock); // Se libera
-  // Fin de zona crítica
+  release(&semaphore_counter[sem_id].lock); // unlocked
+  // End of critical zone
 
   return 1;
 }
@@ -107,21 +107,21 @@ uint64
 sys_sem_close(void)
 {
   int sem_id;
-  argint(0, &sem_id); // Se toma el id del semáforo ingresado por usuario y se guarda en sem_id.
+  argint(0, &sem_id); // argint processes the id the user passed as input
 
   if(sem_id < 0 || sem_id >= MAXCNTSEM || semaphore_counter[sem_id].value == -1){
-    return 0; // En caso de haber errores, devuelve cero
+    return 0; // return 0 if unsuccessful
   }
 
-  wakeup(&semaphore_counter[sem_id]); // Si hay procesos dormidos esperando, los despierta
+  wakeup(&semaphore_counter[sem_id]); // Wakes up asleep processes
 
-  // Zona crítica para evitar que datos se sobreescriban
-  acquire(&semaphore_counter[sem_id].lock);  // Se lockea
+  // Critical zone
+  acquire(&semaphore_counter[sem_id].lock);  // locked
 
-  semaphore_counter[sem_id].value = -1;       // Guardo -1 en el valor para simbolizar que el semáforo está cerrado
+  semaphore_counter[sem_id].value = -1;       // -1 symbolizes a closed semaphore. Writes -1 in all the semaphore's positions.
   
-  release(&semaphore_counter[sem_id].lock);  // Se libera
-  // Fin de zona crítica
+  release(&semaphore_counter[sem_id].lock);  // unlocked
+  // End of critical zone
 
   return 1; 
 }
