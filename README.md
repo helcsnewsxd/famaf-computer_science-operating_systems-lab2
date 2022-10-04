@@ -230,22 +230,22 @@ Fue necesario modificar los siguientes archivos:
 ## **Herramientas de Programación**
 Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
 
-### **Material teórico de estudio y preparación**
+### *Material teórico de estudio y preparación*
 
  - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
  - [**Documentación de XV6**](https://course.ccs.neu.edu/cs3650/unix-xv6/index.html)
  - [**Explicaciones sobre el funcionamiento de XV6**](https://github.com/YehudaShapira/xv6-explained)
  - [**Repositorio XV6**](https://github.com/mit-pdos/xv6-book) 
-### **Desarrollo**
+### *Desarrollo*
 
  - [Visual Studio Code](https://code.visualstudio.com/), editor de código
  - [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), formateador de código
     - Se generó una configuración basada en la guía de estilo de GNU y se subió al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de forma similar.
-### **Compilacion**
+### *Compilacion*
 
 - [GNU Make](https://www.gnu.org/software/make/)
 
-### **Debugging**
+### *Debugging*
 
 - [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 
