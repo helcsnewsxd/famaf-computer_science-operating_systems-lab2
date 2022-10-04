@@ -1,6 +1,6 @@
 # Laboratorio número 2 de Sistemas Operativos 2022 - Grupo 12 | FaMAF UNC
 
-# Integrantes del grupo:
+## Integrantes del grupo:
 
 - Lautaro Bachmann (lautaro.bachmann@mi.unc.edu.ar)
 - Juan Bratti (juanbratti@mi.unc.edu.ar)
