@@ -12,9 +12,10 @@
 
  - [Introducción](#markdown-header-introduccion)
  - [Modularización](#markdown-header-detalles-de-implementacion)
-    - [Syscalls utilizadas](#markdown-header-caracteristicas-implementadas)
+    - [Syscalls utilizadas](#markdown-header-syscalls-utilizadas)
     - [Implementación semaforo](#markdown-header-implementacion-semaforo)
     - [Implementaciones en XV6](#markdown-header-implementaciones-en-xv6)
+    - [Implementaciones interesantes](#markdown-header-implementaciones-interesantes)
  - [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
  - [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
  - [Conclusiones](#markdown-header-conclusiones)
@@ -68,7 +69,7 @@ Una vez deja de revisar la tabla del proceso, la libera.
 #### **argint(*int n, int \*ip*)**
 Obtiene el argumento *n*-ésimo insertado en la pila de usuario por el código de usuario antes de que el usuario solicite una llamada al sistema y lo escribe en *ip*.
 
-## **Implementación semaforo**
+### **Implementación semáforo**
 
 #### **Manejo de secciones críticas**
 En todas aquellas secciones donde se utilizan recursos compartidos, como por ejemplo al modificar el valor del semaforo, se utilizan las funciones **acquire** y **release** para asegurarnos de que no se sobreescriban los datos y logrando así un acceso síncrono a los recursos por parte de los procesos. 
@@ -191,14 +192,17 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
  
  Los ciclos for de ambos procesos (hijo y padre) sirven para que se realice cada print N veces, haciendo referencia a la cantidad que pasa el usuario por terminal. Se destaca que en el proceso padre se cierran los semáforos porque "pong" es lo último que se imprime, por lo tanto, el padre es el encargado de cerrarlos.
 
-## **Implementaciones en XV6**
-Para poder implementar las llamadas al sistema necesarias para el laboratorio, tuvimos que investigar sobre la adición de las mismas en los archivos complementarios de XV6. Para ello, fue necesario cambiar algunos archivos y agregar en los mismos las definiciones y prototipos de las funciones a implementar, especialmente, las llamadas al sistema.
+### **Implementaciones en XV6**
+Para poder implementar las llamadas al sistema necesarias para el laboratorio, tuvimos que investigar sobre los archivos que complementan a XV6 y la adición de las llamadas en los mismos. Para ello, fue necesario realizar algunas modificaciones en las librerías de XV6 y agregar en las mismas las definiciones y prototipos de las funciones a implementar.
 Fue necesario modificar los siguientes archivos:
-- 
-- Adición de las syscalls en los archivos complementarios de xv6.
-- Implementación de las syscalls pedidas.
-- Implementación del programa ping pong.
-- Testeo correspondiente de las llamadas al sistema.
+
+- user/user.h: se agregaron los prototipos de las 4 llamadas al sistema a implementar.
+- user/usys.pl: se agregaron las llamadas a la función entry() para las 4 llamadas al sistema a implementar.
+- user/pingpong.c: se creó el archivo pingpong.c para realizar la implementación del programa pingpong pedido.
+- kernel/syscall.c y kernel/syscall.h: se agregaron los prototipos de las llamadas al sistema a implementar junto con los números correspondientes a cada una para el correcto mapeo de las funciones.
+- kernel/sem.c: se creó el archivo sem.c para la implementación de las llamadas al sistema con el código del grupo.
+- kernel/param.h: se declararon las variables globales y el arreglo de semáforos para el posterior uso en la implementación.
+- Makefile: se enlazó el ejecutable de pingpong.c y sem.c para la correcta ejecución del programa.
 
 ## **Herramientas de Programación**
 Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
