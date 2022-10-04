@@ -26,11 +26,11 @@ main(int argc, char *argv[])
 
   int N = atoi(argv[1]);
   
-  int pid = fork(); // A partir de aquí tendremos en total 2 procesos
+  int pid = fork(); // From here, we'll have 2 processes running
   if(pid < 0){
     exit_error(0);
     
-  }else if(pid == 0){ // Hijo
+  }else if(pid == 0){ // Child
     for(unsigned int i = 0; i < N; i++){
       error = sem_down(0);
       exit_error(error);
@@ -41,12 +41,12 @@ main(int argc, char *argv[])
       exit_error(error);
     }
 
-  }else{ // Padre
+  }else{ // Parent
 
-    int pid_2 = fork(); // A partir de aquí, tendremos en total 3 procesos
+    int pid_2 = fork(); // From here, we'll have in total 3 processes running
     if(pid_2 < 0){
     exit_error(0); 
-    } else if (pid_2 == 0) { // Hijo
+    } else if (pid_2 == 0) { // Child
             for(unsigned int i = 0; i < N; i++){
             error = sem_down(1);
             exit_error(error);
@@ -56,7 +56,7 @@ main(int argc, char *argv[])
             error = sem_up(2);
             exit_error(error);
             }
-        } else { // Padre
+        } else { // Parent
 
             for(unsigned int i = 0; i < N; i++){
             error = sem_down(2);
@@ -68,13 +68,13 @@ main(int argc, char *argv[])
             exit_error(error);
             }
 
-            // Cerramos semÃ¡foro
+            // Closing the semaphore
             error = sem_close(0); 
             exit_error(error);
-            // Cerramos semÃ¡foro
+            // Closing the semaphore
             error = sem_close(1);
             exit_error(error);
-            // Cerramos semÃ¡foro
+            // Closing the semaphore
             error = sem_close(2);
             exit_error(error);
         }
