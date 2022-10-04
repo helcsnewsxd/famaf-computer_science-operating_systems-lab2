@@ -10,18 +10,7 @@
 
 ## Índice
 
- - [Introducción](#markdown-header-introduccion)
- - [¿Cómo correr el código?](#markdown-header-como-correr-el-codigo)
- - [Modularización](#markdown-header-modularizacion)
-    - [Syscalls utilizadas](#markdown-header-syscalls-utilizadas)
-    - [Implementación semaforo](#markdown-header-implementacion-semaforo)
-    - [Implementaciones interesantes](#markdown-header-implementaciones-interesantes)
-    - [Implementaciones en XV6](#markdown-header-implementaciones-en-xv6)
- - [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
- - [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
- - [Conclusiones](#markdown-header-conclusiones)
- - [Webgrafía](#markdown-header-webgrafia)
-
+[TOC]
 
 ## Introducción
 Implementamos semáforo a través del uso de un arreglo, teniendo así en cada posición un semáforo distinto. Para cada semáforo definimos una estructura con dos campos, uno para guardar el valor y otro para el spinlock, el cual está encargado de regular el acceso correcto a los recursos por parte de los procesos.
