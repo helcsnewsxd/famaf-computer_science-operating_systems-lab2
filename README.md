@@ -49,6 +49,7 @@ make clean
 ```
 
 ## **Modularización**
+Para realizar el trabajo, no nos basamos en una fuerte modularización individual o en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a la longitud del laboratorio. Esta división de partes fue principalmente en el trabajo sobre las syscalls, implementación del semáforo y las implementaciones en XV6 necesarias.
 
 ### **Syscalls utilizadas**
 #### **Introducción al funcionamiento de *acquire* y *release***
