@@ -102,7 +102,7 @@ En el arranque del sistema operativo ejecutamos la función **seminit** que se e
 La función **sem_close** despierta todos los procesos que hayan sido mandados a dormir por el semaforo y establece el valor del semaforo en -1.
 
 ## Implementacion pingpong
-Relacionado a la función ping pong, lo que hicimos fue inicializar dos semáforos, uno para controlar el proceso que imprime por pantalla "ping" y otro para el proceso que imprime "pong".
+Lo que hicimos fue inicializar dos semáforos, uno para controlar el proceso que imprime por pantalla "ping" y otro para el proceso que imprime "pong".
 El semáforo del "ping" se inicializa en 1 y el semáforo del "pong" se inicializa en 0 para luego a través de las funciones sem_up y sem_down intercalar la ejecución de cada proceso.
 
 Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hijo y padre cada print.
@@ -162,11 +162,11 @@ Las principales herramientas utilizadas por el grupo en la implementación y div
 Comenzamos haciendo una investigación sobre el funcionamiento de XV6 y conceptos como race conditions, el funcionamiento de los locks y de los semáforos. Primero implementamos los prototipos de las funciones en XV6 y luego desarrollamos gran parte de la implementación del semáforo todos juntos durante el laboratorio. Luego corregimos detalles y agregando nuevas funcionalidades. El proyecto en general, al ser tan corto, no tuvo mucha separación u organización interna en subgrupos, más bien trabajamos en las partes necesarias para avanzar en conjunto. Decidimos hacerlo de esta forma debido a la longitud del laboratorio.
 
 ## Problemas
-No pudimos implementar una función denominada prodsumadiv, con la cual podiamos comprobar facilmente que los semaforos funcionen correctamente y no haya race conditions. 
+No pudimos implementar una función denominada prodsumadiv, la cual recibia 4 argumentos y con la cual podiamos comprobar facilmente que los semaforos funcionen correctamente y no haya race conditions. 
 
-Lo que hacia la función es arg4 veces la operación "x = (x * arg1 + arg2)/arg3", usando 3 procesos, uno por argumento.
+Siendo *arg_i* el argumento *i* de la función, lo que hacía era *arg_4* veces la operación `x = (x * arg_1 + arg_2)/arg_3`, usando 3 procesos, uno por argumento.
 
-El problema fue que al crear los procesos con fork no vimos forma de compartir memoria entre padres e hijos (sin que se genere una copia). Esto se debe más que nada que mmap y demás funciones no están implementadas en xv6. Para eso necesitabamos crear las syscalls y el ambiente en xv6 para los threads, y consideramos que no es el objetivo del presente laboratorio.
+El problema fue que al crear los procesos con **fork** no vimos forma de compartir memoria entre padres e hijos (se genera una copia de la misma para cada proceso). Funciones como **mmap** resuelven este problema, pero no están implementadas en XV6. También se podrían crear las syscalls y el ambiente en XV6 para los threads y utilizarlos en vez de usar **fork**, pero consideramos que no es el objetivo del presente laboratorio.
 
 ## *Comunicación*
 La comunicación se basó fuertemente en plataformas como [Discord](https://discord.com/), donde la comunicación es más organizada y se pueden hacer llamadas de voz, y [Telegram](https://telegram.org/), donde conseguimos una comunicación más veloz e informal. 
