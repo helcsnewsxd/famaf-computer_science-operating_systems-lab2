@@ -11,11 +11,11 @@
 ## **Índice**
 
  - [Introducción](#markdown-header-introduccion)
- - [Modularización](#markdown-header-detalles-de-implementacion)
+ - [Modularización](#markdown-header-modularizacion)
     - [Syscalls utilizadas](#markdown-header-syscalls-utilizadas)
     - [Implementación semaforo](#markdown-header-implementacion-semaforo)
-    - [Implementaciones en XV6](#markdown-header-implementaciones-en-xv6)
     - [Implementaciones interesantes](#markdown-header-implementaciones-interesantes)
+    - [Implementaciones en XV6](#markdown-header-implementaciones-en-xv6)
  - [Herramientas de Programación](#markdown-header-herramientas-de-programacion)
  - [Desarrollo del proyecto](#markdown-header-desarrollo-del-proyecto)
  - [Conclusiones](#markdown-header-conclusiones)
