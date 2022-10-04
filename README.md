@@ -126,7 +126,7 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 - **user/pingpongpung.c:** variacion de pingpong que usa 3 hilos para testear si nuestra implementacion del semaforo es correcta.
 
 ### Otros
-- **Makefile:** se enlazó el ejecutable de pingpong.c, pingpongpung.c y sem.c para la correcta ejecución del programa.
+- **Makefile:** se enlazó el ejecutable de pingpong.c, pingpongpung.c y sem.c para la correcta ejecución del programa. Ademas se cambio el nombre del README de XV6 a README-XV6.
 
 # Herramientas de Programación
 Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
