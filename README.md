@@ -63,7 +63,6 @@ Obtiene el argumento *n*-ésimo insertado en la pila de usuario por el código d
 #### **Manejo de secciones críticas**
 En todas aquellas secciones donde se utilizan recursos compartidos, como por ejemplo al modificar el valor del semaforo, se utilizan las funciones **acquire** y **release** para asegurarnos de que no se sobreescriban los datos y logrando así un acceso síncrono a los recursos por parte de los procesos. 
 
-
 #### **Estructuras del semáforo**
 ```c
 // Estructura del semáforo
@@ -189,15 +188,46 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
 
 
 ## **Herramientas de Programación**
+Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
 
+### **Material teórico de estudio y preparación**
+
+ - [**Operating Systems: Three Easy Pieces**: Process virtualization](https://pages.cs.wisc.edu/~remzi/OSTEP/), principalmente el capítulo número 5 (*Process API*) junto con su sección de *Homework Simulation* y *Homework Code*
+ - [**Documentación de XV6**](https://course.ccs.neu.edu/cs3650/unix-xv6/index.html)
+ - [**Explicaciones sobre el funcionamiento de XV6**](https://github.com/YehudaShapira/xv6-explained)
+### **Desarrollo**
+
+ - [Visual Studio Code](https://code.visualstudio.com/), editor de código
+ - [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html), formateador de código
+    - Se generó una configuración basada en la guía de estilo de GNU y se subió al repositorio para que el editor de texto de todos los integrantes del grupo se comporte de forma similar.
+### **Compilacion**
+
+- [GNU Make](https://www.gnu.org/software/make/)
+
+### **Debugging**
+
+- [GDB](https://sourceware.org/gdb/), depurador estándar para el compilador GNU.
 
 ## **Desarrollo**
+### *Comunicación*
+La comunicación se basó fuertemente en plataformas como [Discord](https://discord.com/) y [Telegram](https://telegram.org/).
+
+### *Workflow de desarrollo*
+#### *Branches*
+Para lograr una mayor organización del código durante la implementación y desarrollo, nuestra organización se apoyó fuertemente en el uso de branchs dentro del repositorio de bitbucket.
+
+En cada parte del trabajo, se crearon branchs para: adición de los prototipos a los archivos complementarios de XV6, realización del informe, implementación de las syscalls y testeo de las mismas.
+
+### *Pruebas utilizadas*
+Además de los tests brindados por la cátedra, se realizaron pruebas caseras. Uno de los tests realizados fue pingpongpung (mismo comportamiento que pingpong pero con 3 hilos).
+
+De este modo, pudimos probar el correcto funcionamiento de nuestra implementación para distintos contextos.
 
 
 ## **Conclusiones**
 Al implementar semaforos en XV6, aprendimos sobre condiciones de carrera, locks, mutex y sobre operaciones atómicas y como administrar la memoria en sistemas operativos para evitar sobreescrituras, todo con el objetivo de permitir a los hilos intercambiar información de forma segura. 
 
-Probablemente todo este aprendizaje cobre mucho más sentido cuando lleguemos a la sección de concurrencia en el teórico, pero creemos que este proyecto nos sirvió de alguna forma como introducción a ese tema y nos va a ser más fácil cuando tengamos que verlo desde la teoria.
+Probablemente todo este aprendizaje cobre mucho más sentido cuando lleguemos a la sección de concurrencia en el teórico, pero creemos que este proyecto nos sirvió de alguna forma como introducción a ese tema y nos va a ser más fácil cuando tengamos que verlo desde la teoría.
 
 También aprendimos sobre XV6, como separa sus espacios de kernel y de usuario y como hace la comunicación entre ellos. 
 
