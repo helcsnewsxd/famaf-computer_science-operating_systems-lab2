@@ -194,6 +194,7 @@ En el proceso padre, se siguen los mismos pasos pero de forma opuesta: aumenta e
 
 ### **Implementaciones en XV6**
 Para poder implementar las llamadas al sistema necesarias para el laboratorio, tuvimos que investigar sobre los archivos que complementan a XV6 y la adición de las llamadas en los mismos. Para ello, fue necesario realizar algunas modificaciones en las librerías de XV6 y agregar en las mismas las definiciones y prototipos de las funciones a implementar.
+Primero, identificamos el espacio de usuario y el espacio de kernel. En el primero, tuvimos que modificar aquellos archivos relacionados con la interacción con el usuario, escribiendo los prototipos y las definiciones de las funciones necesarias para que estén al alcance del mismo. En el segundo, tuvimos que añadir las 4 llamadas al sistema a las herramientas internas de XV6.
 Fue necesario modificar los siguientes archivos:
 
 - user/user.h: se agregaron los prototipos de las 4 llamadas al sistema a implementar.
