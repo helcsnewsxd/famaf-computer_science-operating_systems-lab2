@@ -114,12 +114,19 @@ Usando la syscall fork, intercalamos entre el proceso hijo y padre cada print.
 ### Kernel
 - kernel/syscall.c y kernel/syscall.h: se agregaron los prototipos de las llamadas al sistema a implementar junto con los números correspondientes a cada una para el correcto mapeo de las funciones.
 - kernel/sem.c: se creó el archivo sem.c para la implementación de las llamadas al sistema con el código del grupo.
+- kernel/printf.c: implementar funcion para convertir un entero no signado en un string
+- kernel/string.c: implementar funcion para concatenar strings
 - kernel/param.h: se declararon las variables globales y el arreglo de semáforos para el posterior uso en la implementación.
+- kernel/defs.h: Añadir prototipos para las siguientes funciones:
+    - `uint_to_str`
+    - `seminit`
+    - `strcat`
 
 ### User
 - user/user.h: se agregaron los prototipos de las 4 llamadas al sistema a implementar.
 - user/usys.pl: se agregaron las llamadas a la función entry() para las 4 llamadas al sistema a implementar.
 - user/pingpong.c: se creó el archivo pingpong.c para realizar la implementación del programa pingpong pedido.
+- user/pingpongpung.c: variacion de pingpong que usa 3 hilos para testear si nuestra implementacion del semaforo es correcta.
 
 ### Otros
 - Makefile: se enlazó el ejecutable de pingpong.c y sem.c para la correcta ejecución del programa.
