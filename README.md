@@ -111,14 +111,17 @@ El semáforo del "ping" se inicializa en 1 y el semáforo del "pong" se iniciali
 Usando la syscall fork, intercalamos entre el proceso hijo y padre cada print.
 
 ## Implementaciones en XV6
-Se modificaron los siguientes archivos:
-
-- user/user.h: se agregaron los prototipos de las 4 llamadas al sistema a implementar.
-- user/usys.pl: se agregaron las llamadas a la función entry() para las 4 llamadas al sistema a implementar.
-- user/pingpong.c: se creó el archivo pingpong.c para realizar la implementación del programa pingpong pedido.
+### Kernel
 - kernel/syscall.c y kernel/syscall.h: se agregaron los prototipos de las llamadas al sistema a implementar junto con los números correspondientes a cada una para el correcto mapeo de las funciones.
 - kernel/sem.c: se creó el archivo sem.c para la implementación de las llamadas al sistema con el código del grupo.
 - kernel/param.h: se declararon las variables globales y el arreglo de semáforos para el posterior uso en la implementación.
+
+### User
+- user/user.h: se agregaron los prototipos de las 4 llamadas al sistema a implementar.
+- user/usys.pl: se agregaron las llamadas a la función entry() para las 4 llamadas al sistema a implementar.
+- user/pingpong.c: se creó el archivo pingpong.c para realizar la implementación del programa pingpong pedido.
+
+### Otros
 - Makefile: se enlazó el ejecutable de pingpong.c y sem.c para la correcta ejecución del programa.
 
 # Herramientas de Programación
