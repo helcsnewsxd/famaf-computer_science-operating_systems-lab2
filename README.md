@@ -91,7 +91,7 @@ struct sem semaphore_counter[MAXCNTSEM];
 Para inicializar el semáforo deseado se utiliza sem_open colocando como argumentos el ID del semaforo y el valor inicial del semaforo. El ID del semáforo va a ser el indice del arreglo de semaforos al cual accederemos, y en caso de ya estar siendo utilizado se le informa al usuario mediante un error. Se inicializa el *lock* del semaforo y se lo utiliza para bloquearlo mientras se le asigna al semaforo su valor inicial.
 
 ### sem\_up y sem\_down
-Para administrar el uso de recursos entre procesos se usan las funciones **sem_up** y **sem_down**. Dentro de estas funciones se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos y administrar los procesos dormidos, cumpliendo con la consigna de bloquer los procesos cuando el valor del semaforo es 0 al utilizar **sem_down** y desbloquearlos cuando el valor del semaforo es 0 al utilizar **sem_up**
+Para administrar el uso de recursos entre procesos se usan las funciones **sem_up** y **sem_down**. Dentro de estas funciones se utilizaron las syscalls sleep y wakeup para regular el acceso a los recursos y administrar los procesos dormidos, cumpliendo con la consigna de bloquear los procesos cuando el valor del semaforo es 0 al utilizar **sem_down** y desbloquearlos cuando el valor del semaforo es 0 al utilizar **sem_up**
 
 ### Semaforos bloqueados
 Para definir cuando un semaforo esta "bloqueado", asignamos al valor del semaforo el entero -1.
@@ -111,7 +111,7 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 ## Implementaciones en XV6
 ### Kernel
 - **kernel/syscall.c y kernel/syscall.h:** se agregaron los prototipos de las llamadas al sistema a implementar junto con los números correspondientes a cada una para el correcto mapeo de las funciones.
-- **kernel/sem.c:** se creó el archivo sem.c para la implementación de las llamadas al sistema con el código del grupo.
+- **kernel/sem.c:** se creó el archivo sem.c, en el mismo se implementaron las llamadas al sistemas pedidas.
 - **kernel/printf.c:** implementar funcion para convertir un entero no signado en un string
 - **kernel/string.c:** implementar funcion para concatenar strings
 - **kernel/param.h:** se declararon las variables globales y el arreglo de semáforos para el posterior uso en la implementación.
@@ -127,7 +127,7 @@ Usando la syscall fork, creamos el hijo y luego intercalamos entre el proceso hi
 - **user/pingpongpung.c:** variacion de pingpong que usa 3 hilos para testear si nuestra implementacion del semaforo es correcta.
 
 ### Otros
-- **Makefile:** se enlazó el ejecutable de pingpong.c y sem.c para la correcta ejecución del programa.
+- **Makefile:** se enlazó el ejecutable de pingpong.c, pingpongpung.c y sem.c para la correcta ejecución del programa.
 
 # Herramientas de Programación
 Las principales herramientas utilizadas por el grupo en la implementación y división del proyecto fueron las siguientes:
